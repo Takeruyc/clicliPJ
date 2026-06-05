@@ -1,10 +1,203 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理后台</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #ddd; }
+        .tab { padding: 10px 20px; cursor: pointer; background: none; border: none; font-size: 16px; }
+        .tab.active { border-bottom: 2px solid #00a1d6; color: #00a1d6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f5f5f5; }
+        .btn { padding: 4px 8px; margin: 2px; text-decoration: none; font-size: 12px; border-radius: 4px; display: inline-block; }
+        .btn-edit { background: #ffc107; color: #333; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-add { background: #00a1d6; color: white; border: none; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; text-decoration: none; display: inline-block; border-radius: 4px; }
+        .form-container { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; max-width: 400px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn-submit { background: #00a1d6; color: white; border: none; padding: 8px 20px; cursor: pointer; border-radius: 4px; }
+        .edit-section { background: #fff3cd; border: 1px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .edit-section h3 { margin-bottom: 15px; color: #856404; }
+        .current-file { font-size: 12px; color: #666; margin-bottom: 5px; }
+        .success-msg { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
+        .error-msg { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        .top-buttons { display: flex; gap: 10px; align-items: center; }
+        .btn-home { background: #28a745; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; }
+        .btn-home:hover { background: #218838; }
+        .logout-link { background: #6c757d; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; }
+        .logout-link:hover { background: #5a6268; }
+    </style>
 </head>
 <body>
-    
+    <div class="admin-container">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>管理后台</h1>
+            <div class="top-buttons">
+                <a href="/" class="btn-home">返回首页</a>
+                <a href="/logout" class="logout-link" onclick="return confirm('确定要退出吗？')">退出登录</a>
+            </div>
+        </div>
+        
+        <!-- 成功提示 -->
+        <div th:if="${successMsg != null}" class="success-msg" th:text="${successMsg}"></div>
+        <!-- 错误提示 -->
+        <div th:if="${errorMsg != null}" class="error-msg" th:text="${errorMsg}"></div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="videos">视频管理</button>
+            <button class="tab" data-tab="users">用户管理</button>
+        </div>
+        
+        <!-- 视频管理 -->
+        <div id="videosTab" class="tab-content active">
+            <!-- 编辑表单（只有在 editId 有值时显示） -->
+            <div th:if="${editVideo != null}" class="edit-section">
+                <h3>编辑视频</h3>
+                <form method="post" action="/admin/video/edit" enctype="multipart/form-data">
+                    <input type="hidden" name="id" th:value="${editVideo.id}">
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" name="title" th:value="${editVideo.title}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>分类</label>
+                        <select name="category">
+                            <option value="动漫" th:selected="${editVideo.category == '动漫'}">动漫</option>
+                            <option value="体育" th:selected="${editVideo.category == '体育'}">体育</option>
+                            <option value="游戏" th:selected="${editVideo.category == '游戏'}">游戏</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea name="description" rows="3" th:text="${editVideo.description}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>封面图</label>
+                        <div class="current-file" th:if="${editVideo.coverPath != null}">
+                            当前：<span th:text="${editVideo.coverPath}"></span>
+                        </div>
+                        <input type="file" name="cover" accept="image/*">
+                        <small>留空则保持原图</small>
+                    </div>
+                    <div class="form-group">
+                        <label>视频文件</label>
+                        <div class="current-file" th:if="${editVideo.videoPath != null}">
+                            当前：<span th:text="${editVideo.videoPath}"></span>
+                        </div>
+                        <input type="file" name="video" accept="video/*">
+                        <small>留空则保持原视频</small>
+                    </div>
+                    <button type="submit" class="btn-submit">保存修改</button>
+                    <a href="/admin/dashboard" class="btn-delete" style="background:#ccc; color:#333;">取消编辑</a>
+                </form>
+            </div>
+            
+            <!-- 新增表单 -->
+            <div class="form-container">
+                <h3>➕ 新增视频</h3>
+                <form method="post" action="/admin/video/add" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>分类</label>
+                        <select name="category">
+                            <option value="动漫">动漫</option>
+                            <option value="体育">体育</option>
+                            <option value="游戏">游戏</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>封面图</label>
+                        <input type="file" name="cover" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label>视频文件</label>
+                        <input type="file" name="video" accept="video/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea name="description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">上传视频</button>
+                </form>
+            </div>
+            
+            <!-- 视频列表 -->
+            <h3>视频列表</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="video : ${videos}">
+                        <td th:text="${video.id}">1</td>
+                        <td th:text="${video.title}">标题</td>
+                        <td th:text="${video.category}">分类</td>
+                        <td>
+                            <a th:href="@{/admin/dashboard(editId=${video.id})}" class="btn btn-edit">编辑</a>
+                            <a th:href="@{/admin/video/delete/{id}(id=${video.id})}" class="btn btn-delete" onclick="return confirm('确定删除？')">删除</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${videos.empty}"><td colspan="4">暂无视频</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 用户管理 -->
+        <div id="usersTab" class="tab-content">
+            <h3>用户列表</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>昵称</th>
+                        <th>邮箱</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">id</td>
+                        <td th:text="${user.nickname}">昵称</td>
+                        <td th:text="${user.email}">邮箱</td>
+                        <td>
+                            
+                            <a th:if="${user.id != currentAdminId}" 
+                               th:href="@{/admin/user/delete/{id}(id=${user.id})}" 
+                               class="btn btn-delete" 
+                               onclick="return confirm('确定删除该用户？')">删除</a>
+                            <span th:if="${user.id == currentAdminId}" style="color:#999; font-size:12px;">管理员账户禁止删除</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${users.empty}"><td colspan="4">暂无用户</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(tab.dataset.tab + 'Tab').classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

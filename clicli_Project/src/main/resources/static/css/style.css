@@ -1,0 +1,191 @@
+@charset "UTF-8";
+.back{
+    background-color: rgb(255, 228, 254);
+}
+
+#top {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    height: 100px;
+    width: 100%;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+}
+/* 首页 */
+#siteName{
+    width: 60%;
+}
+
+#middle{
+    display: flex;
+    justify-content: space-between; 
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    top: 50px;
+    left: 0;
+}
+#middle{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+#kind{
+    display: flex;          /* 分类和按钮横向排列 */
+    align-items: center;    /* 垂直居中 */
+    gap: 90px;              /* 分类和按钮组之间的距离 */
+}
+#kind p{
+    margin: 0;              /* 去掉 p 标签默认上下边距 */
+    font-size: 18px;
+    font-weight: bold;
+}
+.kindButton{
+    display: flex;          /* 按钮横向排列 */
+    gap: 15px;              /* 按钮之间的距离 */
+}
+/* 整个底部区域 */
+#bottom{
+    display: flex;
+    gap: 20px;
+    background-color: rgb(255, 228, 254);
+    width: 90%;
+    margin: 140px auto 30px auto;
+    margin-top: 160px;
+    align-items: stretch;
+}
+
+/* 左侧推荐视频 */
+#recommendVideo{
+    width: 40%;
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+/* 图片上标题下 */
+#rvImg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 推荐视频图片 */
+#rvImg img{
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+}
+
+/* 推荐标题 */
+#rvTitle{
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 右侧区域 */
+#commandVideo{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* 两行视频 */
+.video{
+    display: flex;
+    gap: 20px;
+}
+/* 单个视频 */
+.cmVideo{
+    flex: 1;
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* 封面 */
+.poster{
+    width: 100%;
+    border-radius: 15px;
+    display: block;
+}
+
+/* 标题 */
+.vTitle{
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+/* 登录界面 */
+#article{
+    margin-top: 200px;
+    margin-left: 280px;
+    text-align: center;
+    align-items: center;
+    height: 100vh;
+    width: 60%;
+}
+.login-input{
+    width: 350px;
+    margin: 0 auto;
+}
+#article p{
+    margin-top: 30px;
+    font-size: 18px;
+
+}
+#smallTitle{
+    color: rgb(235, 0, 141);
+}
+#play{
+    display: flex; 
+    justify-content: space-between; 
+    height: 700px;
+    width: 90%;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    margin-top: 80px;
+    margin-left: 70px;
+    background-color: white;
+    border-radius: 20px;
+}
+#playVideo{
+    margin-left: 80px;
+    margin-top: 30px;
+}
+
+#side{
+    text-align: right;
+    margin-right: 40px;
+    margin-top: 30px;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.sidePoster{
+    width: 60%;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.sideVideo p{
+    margin: 0;
+
+    margin-bottom: 10px;
+}

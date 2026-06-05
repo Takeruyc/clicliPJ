@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>视频播放</title>
+    <title th:text="${video.title}">视频播放</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body style="background-color:rgb(255, 228, 254);">
+    <div class="back" id="top">
+        <div id="siteName">
+            <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;">
+        </div>
+        <div>
+            <p style="color:rgb(235, 0, 141); display: inline; margin-right: 20px;" th:text="${nickname != null ? nickname : '未登录'}">用户名</p>
+            <img src="/uploads/covers/已登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;">
+            <a th:if="${nickname != null}" href="/logout" class="btn btn-sm btn-danger">退出</a>
+        </div>
+    </div>
     
+    <div class="back" id="play">
+        <div id="playVideo">
+            <h4 id="smallTitle" th:text="${video.title}">视频标题</h4>
+            <p th:text="${video.createdAt}">时间</p>
+            <video controls style="width: 700px; height: 400px;">
+                <source th:src="${video.videoPath}" type="video/mp4">
+                浏览器不支持视频播放
+            </video>
+        </div>
+        <div id="side">
+            <h4 id="smallTitle">为你推荐</h4>
+            <div th:each="rec : ${recommendVideos}" class="sideVideo" th:onclick="'location.href=\'/video/' + ${rec.id} + '\''">
+                <p th:text="${rec.title}">推荐视频标题</p>
+                <img class="sidePoster" th:src="${rec.coverPath != null ? rec.coverPath : '/uploads/covers/封面.jpg'}">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
