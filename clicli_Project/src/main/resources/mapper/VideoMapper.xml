@@ -28,5 +28,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="delete">
         DELETE FROM video WHERE id = #{id}
     </delete>
+    
+    <!-- 新增 update -->
+    <update id="update">
+        UPDATE video
+        SET title = #{title},
+            category = #{category},
+            cover_path = #{coverPath},
+            video_path = #{videoPath},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -14,4 +14,5 @@ public interface VideoMapper {
     Video findById(@Param("id") Long id);
     void delete(@Param("id") Long id);
     List<Video> findByCategory(@Param("category") String category);
+    void update(Video video); 
 }

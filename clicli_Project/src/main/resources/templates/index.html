@@ -1,67 +1,83 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>首页</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<body style="background-color:rgb(255, 228, 254);">
+<body style="background-color:rgb(255, 228, 254);;">
     <!-- 顶部 -->
     <div class="back" id="top">
+        <!-- 站名图片 -->
         <div id="siteName">
             <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;">
         </div>
+        <!-- 登录或未登录的头像和登录按钮 -->
         <div>
-            <div th:if="${loggedIn}">
+            <div th:if="${session.loginUser != null}">
                 <img src="/uploads/covers/已登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;">
-                <span th:text="${nickname}"></span>
+                <span th:text="${session.loginUser.nickname}"></span>
                 <a class="btn text-white" style="background-color:#ff69b4;" href="/logout">退出</a>
             </div>
-            <div th:unless="${loggedIn}">
+            <div th:unless="${session.loginUser != null}">
                 <img src="/uploads/covers/未登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;">
                 <a class="btn text-white" style="background-color:#ff69b4;" href="/login">登录</a>
             </div>
         </div>
+        <!-- 管理员登录按钮 -->
         <div>
             <a class="btn text-white" style="background-color:#ff69b4;" href="/admin/login">管理员登录</a>
         </div>
     </div>
-    
     <div class="back" id="middle">
+        <!-- 分类 -->
         <div id="kind">
             <p>分类:</p>
             <div class="kindButton">
-                <a href="/?category=游戏" class="btn btn-light btn-sm">游戏</a>
-                <a href="/?category=体育" class="btn btn-light btn-sm">体育</a>
-                <a href="/?category=动漫" class="btn btn-light btn-sm">动漫</a>
                 <a href="/?category=全部" class="btn btn-light btn-sm">全部</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=游戏" class="btn btn-light btn-sm">游戏</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=体育" class="btn btn-light btn-sm">体育</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=动漫" class="btn btn-light btn-sm">动漫</a>
             </div>
         </div>
     </div>
-    
+    <!-- 视频部分 -->
     <div class="back" id="bottom">
-        <div id="recommendVideo" th:if="${videos != null and not videos.empty}">
-            <div th:with="firstVideo=${videos[0]}">
+        <!-- 推荐视频 -->
+        <div id="recommendVideo" th:if="${video != null}">
+            <a th:href="@{/video/{id}(id=${video.id})}" style="text-decoration: none; color: inherit;">
                 <div id="rvImg">
-                    <img th:src="${firstVideo.coverPath != null ? firstVideo.coverPath : '/uploads/covers/大封面.jpg'}" style="width: 100%; height: auto;">
-                    <p id="rvTitle" th:text="${firstVideo.title}">推荐视频标题</p>
+                    <img th:src="${video.coverPath != null ? video.coverPath : '/uploads/covers/大封面.jpg'}" style="width: 100%; height: auto;">
+                    <p id="rvTitle" th:text="${video.title}">waaaaa</p>
                 </div>
-            </div>
+            </a>
         </div>
-        
-        <div id="commandVideo">
+        <!-- 一般视频 -->
+        <div id="commandVideo" th:if="${videos != null and not videos.empty}">
             <div class="video">
-                <div th:each="video,iterStat : ${videos}" th:if="${iterStat.index >= 1 and iterStat.index <= 3}" class="cmVideo" th:onclick="'location.href=\'/video/' + ${video.id} + '\''">
-                    <img class="poster" th:src="${video.coverPath != null ? video.coverPath : '/uploads/covers/封面.jpg'}">
-                    <p class="vTitle" th:text="${video.title}">视频标题</p>
+                <div th:each="videoItem,iterStat : ${videos}" th:if="${iterStat.index >= 1 and iterStat.index <= 3}" class="cmVideo">
+                    <a th:href="@{/video/{id}(id=${videoItem.id})}" style="text-decoration: none; color: inherit;">
+                        <img class="poster" th:src="${videoItem.coverPath != null ? videoItem.coverPath : '/uploads/covers/封面.jpg'}">
+                        <p class="vTitle" th:text="${videoItem.title}">yeeeee</p>
+                    </a>
                 </div>
             </div>
             <div class="video">
-                <div th:each="video,iterStat : ${videos}" th:if="${iterStat.index >= 4 and iterStat.index <= 6}" class="cmVideo" th:onclick="'location.href=\'/video/' + ${video.id} + '\''">
-                    <img class="poster" th:src="${video.coverPath != null ? video.coverPath : '/uploads/covers/封面.jpg'}">
-                    <p class="vTitle" th:text="${video.title}">视频标题</p>
+                <div th:each="videoItem,iterStat : ${videos}" th:if="${iterStat.index >= 4 and iterStat.index <= 6}" class="cmVideo">
+                    <a th:href="@{/video/{id}(id=${videoItem.id})}" style="text-decoration: none; color: inherit;">
+                        <img class="poster" th:src="${videoItem.coverPath != null ? videoItem.coverPath : '/uploads/covers/封面.jpg'}">
+                        <p class="vTitle" th:text="${videoItem.title}">yeeeee</p>
+                    </a>
                 </div>
             </div>
         </div>

@@ -26,25 +26,30 @@ public class HomeController {
     private VideoService videoService;
     
     @GetMapping("/")
-    public String index(@RequestParam(required = false) String category, Model model, HttpSession session) {
-        // 获取视频列表（支持分类筛选）
+    public String index(@RequestParam(required = false) String category, 
+                        Model model, 
+                        HttpSession session) {
+        
+        // 根据分类获取视频列表
         List<Video> videos;
         if (category == null || category.isEmpty() || "全部".equals(category)) {
             videos = videoService.findAll();
         } else {
             videos = videoService.getVideosByCategory(category);
         }
+        
         model.addAttribute("videos", videos);
         model.addAttribute("currentCategory", category);
+        
+        // 让第一版的 ${video.title} 能用（取第一个视频作为推荐视频）
+        if (videos != null && !videos.isEmpty()) {
+            model.addAttribute("video", videos.get(0));
+        }
         
         // 获取登录状态
         User loginUser = (User) session.getAttribute("loginUser");
         if (loginUser != null) {
-            model.addAttribute("loggedIn", true);
-            model.addAttribute("nickname", loginUser.getNickname());
-            model.addAttribute("userRole", loginUser.getRole());
-        } else {
-            model.addAttribute("loggedIn", false);
+            model.addAttribute("user", loginUser);
         }
         
         return "index";

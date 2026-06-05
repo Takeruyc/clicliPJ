@@ -41,7 +41,6 @@ public class AdminController {
                         HttpSession session,
                         Model model) {
         if ("admin".equals(adminId) && "admin123".equals(password)) {
-            // 创建管理员 User 对象存入 Session
             User adminUser = new User();
             adminUser.setId("admin001");
             adminUser.setNickname("系统管理员");
@@ -55,9 +54,11 @@ public class AdminController {
         }
     }
     
+    // ========== 修改这里：加上 editId 参数 ==========
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        // 检查是否管理员登录
+    public String dashboard(@RequestParam(required = false) Long editId,
+                            HttpSession session, 
+                            Model model) {
         User loginUser = (User) session.getAttribute("loginUser");
         if (loginUser == null || !"admin".equals(loginUser.getRole())) {
             return "redirect:/admin/login";
@@ -68,8 +69,16 @@ public class AdminController {
         model.addAttribute("videos", videos);
         model.addAttribute("users", users);
         model.addAttribute("currentAdminId", loginUser.getId());
+        
+        // 如果有 editId，获取要编辑的视频
+        if (editId != null) {
+            Video editVideo = videoService.findById(editId);
+            model.addAttribute("editVideo", editVideo);
+        }
+        
         return "admin/dashboard";
     }
+    // ============================================
     
     @PostMapping("/video/add")
     public String addVideo(@RequestParam String title,
@@ -79,7 +88,6 @@ public class AdminController {
                            @RequestParam("video") MultipartFile video,
                            HttpSession session,
                            RedirectAttributes redirectAttributes) {
-        // 检查是否管理员登录
         User loginUser = (User) session.getAttribute("loginUser");
         if (loginUser == null || !"admin".equals(loginUser.getRole())) {
             return "redirect:/admin/login";
@@ -98,11 +106,37 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
     
+    // ========== 新增：编辑视频提交方法 ==========
+    @PostMapping("/video/edit")
+    public String editVideo(@RequestParam Long id,
+                            @RequestParam String title,
+                            @RequestParam String category,
+                            @RequestParam(required = false) String description,
+                            @RequestParam(required = false) MultipartFile cover,
+                            @RequestParam(required = false) MultipartFile video,
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+        
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null || !"admin".equals(loginUser.getRole())) {
+            return "redirect:/admin/login";
+        }
+        
+        try {
+            videoService.update(id, title, category, description, cover, video);
+            redirectAttributes.addFlashAttribute("successMsg", "视频修改成功！");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
+        }
+        
+        return "redirect:/admin/dashboard";
+    }
+
+    
     @GetMapping("/video/delete/{id}")
     public String deleteVideo(@PathVariable Long id, 
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
-        // 检查是否管理员登录
         User loginUser = (User) session.getAttribute("loginUser");
         if (loginUser == null || !"admin".equals(loginUser.getRole())) {
             return "redirect:/admin/login";
