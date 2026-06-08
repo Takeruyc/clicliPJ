@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>视频播放</title>
+    <title th:text="${video.title}">视频播放</title>
+    <link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    
+<body class="page-pink">
+    <div class="back" id="top">
+        <div id="siteName">
+            <a href="/" th:href="@{/}">
+                <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;" alt="clicli">
+            </a>
+        </div>
+        <div class="top-user">
+            <p class="top-nickname" th:text="${nickname != null ? '小笨蛋~' + nickname : '小笨蛋~'}">小笨蛋~用户名</p>
+            <img src="/uploads/covers/已登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;" alt="已登录">
+            <a href="/logout" th:href="@{/logout}" class="btn text-white pink-btn" onclick="return confirm('确定要退出吗？')">退出</a>
+            <a href="/" th:href="@{/}" class="btn text-white pink-btn">返回首页</a>
+        </div>
+    </div>
+
+    <main class="back" id="play">
+        <section id="playVideo">
+            <h4 id="smallTitle" th:text="${video.title}">视频标题</h4>
+            <p class="vMeta" th:text="${video.createdAt != null ? #temporals.format(video.createdAt, 'yyyy-MM-dd HH:mm:ss') : '-'}">2023-01-01 12:00:00</p>
+            <video controls class="main-player">
+                <source th:src="${video.videoPath}" src="/uploads/videos/demo.mp4" type="video/mp4">
+                浏览器不支持视频播放
+            </video>
+            <p class="video-description" th:text="${video.description != null and video.description != '' ? video.description : '暂无描述'}">暂无描述</p>
+        </section>
+        <aside id="side">
+            <h4 id="smallTitle">为你推荐</h4>
+            <a th:each="rec : ${recommendVideos}" class="sideVideo video-link" th:href="@{/video/{id}(id=${rec.id})}">
+                <p th:text="${rec.title}">推荐视频标题</p>
+                <img class="sidePoster" th:src="${rec.coverPath != null and rec.coverPath != '' ? rec.coverPath : '/uploads/covers/封面.jpg'}" src="/uploads/covers/封面.jpg" alt="推荐视频封面">
+            </a>
+            <div class="empty-state small-empty" th:if="${recommendVideos == null or #lists.isEmpty(recommendVideos)}">暂无推荐</div>
+        </aside>
+    </main>
 </body>
 </html>

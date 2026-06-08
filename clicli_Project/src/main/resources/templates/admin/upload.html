@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>视频上传</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="page-pink">
+    <div class="back" id="top">
+        <div id="siteName">
+            <a href="/" th:href="@{/}">
+                <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;" alt="clicli">
+            </a>
+        </div>
+        <div>
+            <img src="/uploads/covers/管理员.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;" alt="管理员">
+            <a class="btn text-white pink-btn" href="/admin/dashboard" th:href="@{/admin/dashboard}">退出编辑</a>
+            <a class="btn text-white pink-btn" href="/" th:href="@{/}">返回首页</a>
+        </div>
+    </div>
+
+    <main class="form-container">
+        <div th:if="${successMsg != null}" class="success-msg" th:text="${successMsg}"></div>
+        <div th:if="${errorMsg != null}" class="error-msg" th:text="${errorMsg}"></div>
+        <h3 id="smallTitle" style="text-align: center; margin-top: 10px;">欢迎管理员sama上传视频(*╹▽╹*)</h3>
+        
+        <form method="post" action="/admin/video/add" th:action="@{/admin/video/add}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>标题</label>
+                <input type="text" class="form-control" name="title" required>
+            </div>
+            <div class="form-group">
+                <label>分类</label>
+                <select class="form-select" name="category">
+                    <option value="动漫">动漫</option>
+                    <option value="体育">体育</option>
+                    <option value="游戏">游戏</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>封面图</label>
+                <input type="file" class="form-control" name="cover" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label>视频文件</label>
+                <input type="file" class="form-control" name="video" accept="video/*" required>
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <textarea class="form-control" name="description" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn text-white pink-btn">上传视频</button>
+                <a class="btn btn-secondary" href="/admin/dashboard" th:href="@{/admin/dashboard}">返回管理后台</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
