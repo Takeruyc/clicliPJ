@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +13,8 @@ import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.service.UserService;
 import com.example.demo.service.VideoService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -29,8 +29,6 @@ public class HomeController {
     public String index(@RequestParam(required = false) String category, 
                         Model model, 
                         HttpSession session) {
-        
-        // 根据分类获取视频列表
         List<Video> videos;
         if (category == null || category.isEmpty() || "全部".equals(category)) {
             videos = videoService.findAll();
@@ -40,13 +38,12 @@ public class HomeController {
         
         model.addAttribute("videos", videos);
         model.addAttribute("currentCategory", category);
-        
-        // 让第一版的 ${video.title} 能用（取第一个视频作为推荐视频）
+
+        // videos不为空时才设置推荐视频
         if (videos != null && !videos.isEmpty()) {
             model.addAttribute("video", videos.get(0));
         }
-        
-        // 获取登录状态
+
         User loginUser = (User) session.getAttribute("loginUser");
         if (loginUser != null) {
             model.addAttribute("user", loginUser);
@@ -67,13 +64,19 @@ public class HomeController {
     
     @PostMapping("/register")
     public String registerUser(User user, Model model) {
+        // 密码格式验证
+        if (user.getPassword() == null || !user.getPassword().matches("^[a-zA-Z0-9]{8,16}$")) {
+            model.addAttribute("error", "密码必须是8-16位字母或数字");
+            return "register";
+        }
+        
         boolean success = userService.register(user);
         if (success) {
             return "redirect:/login";
-        } else {
-            model.addAttribute("error", "邮箱已存在");
-            return "register";
         }
+
+        model.addAttribute("error", "邮箱已存在");
+        return "register";
     }
     
     @PostMapping("/login")

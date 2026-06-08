@@ -11,4 +11,5 @@ public interface UserMapper {
     User findByEmail(@Param("email") String email);
     int existsByEmail(@Param("email") String email);
     List<User> findAll();
+    void deleteById(@Param("id") String id);
 }

@@ -11,7 +11,6 @@ public class Video {
     private String videoPath;
     private String description;
     private LocalDateTime createdAt;
-
     private String reserved1;
     private String reserved2;
     private String reserved3;

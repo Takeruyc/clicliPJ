@@ -8,11 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.example.demo.mapper")
 public class ClicliProjectApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ClicliProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ClicliProjectApplication.class, args);
+    }
 
 }
-
-
-

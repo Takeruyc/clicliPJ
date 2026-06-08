@@ -5,7 +5,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.example.demo.mapper.VideoMapper">
 
-    <insert id="insert">
+    <resultMap id="VideoResultMap" type="com.example.demo.model.Video">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="category" property="category"/>
+        <result column="cover_path" property="coverPath"/>
+        <result column="video_path" property="videoPath"/>
+        <result column="description" property="description"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="reserved1" property="reserved1"/>
+        <result column="reserved2" property="reserved2"/>
+        <result column="reserved3" property="reserved3"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO video(
             title, category, cover_path, video_path, description, created_at
         ) VALUES(
@@ -13,23 +26,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
-    <select id="findAll" resultType="com.example.demo.model.Video">
-        SELECT * FROM video ORDER BY id DESC
+    <select id="findAll" resultMap="VideoResultMap">
+        SELECT * FROM video ORDER BY created_at DESC
     </select>
 
-    <select id="findById" resultType="com.example.demo.model.Video">
+    <select id="findById" resultMap="VideoResultMap">
         SELECT * FROM video WHERE id = #{id}
     </select>
 
-    <select id="findByCategory" resultType="com.example.demo.model.Video">
-        SELECT * FROM video WHERE category = #{category} ORDER BY id DESC
+    <select id="findByCategory" resultMap="VideoResultMap">
+        SELECT * FROM video WHERE category = #{category} ORDER BY created_at DESC
     </select>
 
     <delete id="delete">
         DELETE FROM video WHERE id = #{id}
     </delete>
     
-    <!-- 新增 update -->
     <update id="update">
         UPDATE video
         SET title = #{title},

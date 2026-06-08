@@ -5,6 +5,18 @@
 
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
+    <resultMap id="UserResultMap" type="com.example.demo.model.User">
+        <id column="id" property="id"/>
+        <result column="nickname" property="nickname"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="role" property="role"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="reserved1" property="reserved1"/>
+        <result column="reserved2" property="reserved2"/>
+        <result column="reserved3" property="reserved3"/>
+    </resultMap>
+
     <insert id="insertUser" parameterType="com.example.demo.model.User">
         INSERT INTO `user` (
             id, nickname, email, password, role, created_at
@@ -13,20 +25,20 @@
         )
     </insert>
     
-    <select id="findByEmail" resultType="com.example.demo.model.User">
-        SELECT
-            id, nickname, email, password, role,
-            created_at AS createdAt
-        FROM `user`
-        WHERE email = #{email}
+    <select id="findByEmail" resultMap="UserResultMap">
+        SELECT * FROM `user` WHERE email = #{email}
     </select>
     
     <select id="existsByEmail" resultType="int">
         SELECT COUNT(*) FROM `user` WHERE email = #{email}
     </select>
     
-    <select id="findAll" resultType="com.example.demo.model.User">
+    <select id="findAll" resultMap="UserResultMap">
         SELECT * FROM `user` ORDER BY created_at DESC
     </select>
+
+    <delete id="deleteById">
+        DELETE FROM `user` WHERE id = #{id}
+    </delete>
 
 </mapper>
