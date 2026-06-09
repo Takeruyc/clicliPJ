@@ -1,11 +1,5 @@
 package com.example.demo.controller;
 
-<<<<<<< Updated upstream
-import org.springframework.stereotype.Controller;
-
-@Controller
-public class VideoController {
-=======
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
@@ -48,6 +42,5 @@ public class VideoController {
         model.addAttribute("recommendVideos", recommendVideos);
         return "video";
     }
->>>>>>> Stashed changes
     
 }

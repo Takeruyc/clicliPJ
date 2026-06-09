@@ -1,10 +1,173 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>管理后台</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+    <script>
+        $(function () {
+            function showPanel(panelName) {
+                var isVideo = panelName === "videos";
+                $("#videoManage, #upload").toggle(isVideo);
+                $("#userManage").toggle(!isVideo);
+                $("#videoBtn").toggleClass("active", isVideo);
+                $("#userBtn").toggleClass("active", !isVideo);
+            }
+
+            $("#videoBtn").click(function () {
+                showPanel("videos");
+            });
+
+            $("#userBtn").click(function () {
+                showPanel("users");
+            });
+
+            showPanel($("body").data("active-tab") === "users" ? "users" : "videos");
+        });
+    </script>
 </head>
-<body>
-    
+<body class="page-pink" th:attr="data-active-tab=${activeTab}">
+    <div class="back" id="top">
+        <div id="siteName">
+            <a href="/" th:href="@{/}">
+                <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;" alt="clicli">
+            </a>
+        </div>
+        <div>
+            <img src="/uploads/covers/管理员.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;" alt="管理员">
+            <a class="btn text-white pink-btn" href="/logout" th:href="@{/logout}" onclick="return confirm('确定要退出吗？')">退出</a>
+            <a class="btn text-white pink-btn" href="/" th:href="@{/}">返回首页</a>
+        </div>
+    </div>
+
+    <main id="manage">
+        <div th:if="${successMsg != null}" class="success-msg" th:text="${successMsg}"></div>
+        <div th:if="${errorMsg != null}" class="error-msg" th:text="${errorMsg}"></div>
+
+        <section th:if="${editVideo != null}" class="edit-section">
+            <h3 id="smallTitle">编辑视频</h3>
+            <form method="post" action="/admin/video/edit" th:action="@{/admin/video/edit}" enctype="multipart/form-data">
+                <input type="hidden" name="id" th:value="${editVideo.id}">
+                <div class="admin-form-grid">
+                    <div class="form-group">
+                        <label class="form-label">标题</label>
+                        <input type="text" class="form-control" name="title" th:value="${editVideo.title}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">分类</label>
+                        <select class="form-select" name="category">
+                            <option value="动漫" th:selected="${editVideo.category == '动漫'}">动漫</option>
+                            <option value="体育" th:selected="${editVideo.category == '体育'}">体育</option>
+                            <option value="游戏" th:selected="${editVideo.category == '游戏'}">游戏</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">封面图</label>
+                        <div class="current-file" th:if="${editVideo.coverPath != null}">
+                            当前：<span th:text="${editVideo.coverPath}"></span>
+                        </div>
+                        <input type="file" class="form-control" name="cover" accept="image/*">
+                        <small class="text-muted">留空则保持原图</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">视频文件</label>
+                        <div class="current-file" th:if="${editVideo.videoPath != null}">
+                            当前：<span th:text="${editVideo.videoPath}"></span>
+                        </div>
+                        <input type="file" class="form-control" name="video" accept="video/*">
+                        <small class="text-muted">留空则保持原视频</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <textarea class="form-control" name="description" rows="3" th:text="${editVideo.description}"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn text-white pink-btn">保存修改</button>
+                    <a href="/admin/dashboard" th:href="@{/admin/dashboard}" class="btn btn-secondary">取消编辑</a>
+                </div>
+            </form>
+        </section>
+
+        <div class="back" id="select">
+            <div class="btn-group" role="group" aria-label="管理类型">
+                <button type="button" class="btn btn-outline-primary" id="videoBtn">视频管理</button>
+                <button type="button" class="btn btn-outline-primary" id="userBtn">用户管理</button>
+            </div>
+        </div>
+
+        <section class="row" id="videoManage">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">视频名</th>
+                        <th scope="col">分类</th>
+                        <th scope="col">上传时间</th>
+                        <th scope="col">删除</th>
+                        <th scope="col">更新</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="video : ${videos}">
+                        <td th:text="${video.id}">1</td>
+                        <td th:text="${video.title}">一辈子组乐队好不好</td>
+                        <td th:text="${video.category}">动漫</td>
+                        <td th:text="${video.createdAt != null ? #temporals.format(video.createdAt, 'yyyy-MM-dd HH:mm') : '-'}">2023-01-01</td>
+                        <td class="action-cell">
+                            <a class="btn text-white pink-btn" href="#" th:href="@{/admin/video/delete/{id}(id=${video.id})}" onclick="return confirm('确定删除？')">删除</a>
+                        </td>
+                        <td class="action-cell">
+                            <a class="btn text-white pink-btn" href="#" th:href="@{/admin/dashboard(editId=${video.id})}">更新</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${videos == null or #lists.isEmpty(videos)}">
+                        <td colspan="6" class="empty-row">暂无视频</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="row" id="userManage">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">昵称</th>
+                        <th scope="col">邮箱</th>
+                        <th scope="col">角色</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">1</td>
+                        <td th:text="${user.nickname}">萌萌抹茶猫</td>
+                        <td th:text="${user.email}">bandyarou@123.com</td>
+                        <td th:text="${user.role}">user</td>
+                        <td class="action-cell">
+                            <a th:if="${user.id != currentAdminId}"
+                               class="btn text-white pink-btn"
+                               href="#"
+                               th:href="@{/admin/user/delete/{id}(id=${user.id})}"
+                               onclick="return confirm('确定删除该用户？')">删除</a>
+                            <span th:if="${user.id == currentAdminId}" class="text-muted">管理员账户不可删除</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${users == null or #lists.isEmpty(users)}">
+                        <td colspan="5" class="empty-row">暂无用户</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="upload">
+            <p>管理员sama要传视频吗(*^▽^*)</p>
+            <a class="btn text-white pink-btn" href="/admin/upload" th:href="@{/admin/upload}">上传</a>
+        </div>
+    </main>
 </body>
 </html>

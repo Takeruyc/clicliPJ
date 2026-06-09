@@ -1,17 +1,13 @@
 package com.example.demo.controller;
 
-<<<<<<< Updated upstream
-=======
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> Stashed changes
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< Updated upstream
-=======
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,17 +15,17 @@ import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.service.UserService;
 import com.example.demo.service.VideoService;
->>>>>>> Stashed changes
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private VideoService videoService;
     
     @GetMapping("/")
-<<<<<<< Updated upstream
-    public String index() {
-        return "index";
-    }
-=======
     public String index(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String keyword,
@@ -120,5 +116,4 @@ public class HomeController {
     }
     
     
->>>>>>> Stashed changes
 }
