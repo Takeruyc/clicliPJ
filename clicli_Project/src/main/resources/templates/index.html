@@ -4,7 +4,106 @@
     <meta charset="UTF-8">
     <title>首页</title>
 </head>
+<<<<<<< Updated upstream
 <body>
     
+=======
+<body class="page-pink">
+    <div class="back" id="top">
+        <div id="siteName">
+            <a href="/" th:href="@{/}">
+                <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;" alt="clicli">
+            </a>
+        </div>
+		<div class="search-container">
+		    <form th:action="@{/}" method="get" class="search-form">
+		        <input type="text"
+		               name="keyword"
+		               th:value="${keyword}"
+		               placeholder="请输入视频标题"
+		               class="search-input">
+
+		        <button type="submit" class="search-btn">
+		            搜索
+		        </button>
+		    </form>
+		</div>
+		
+        <div class="top-actions">
+			<div th:if="${session.loginUser != null}" class="top-user">
+				<img class="avatar"
+				     th:src="${session.loginUser.role == 'admin'} 
+				        ? '/uploads/covers/管理员.png' 
+				        : '/uploads/covers/已登录.png'">
+			    <span class="top-nickname" th:text="${session.loginUser.nickname}">用户名</span>
+			    <a class="btn text-white pink-btn"
+			       th:href="@{/logout}"
+			       onclick="return confirm('确定要退出吗？')">
+			        退出
+			    </a>
+			</div>
+            <div th:unless="${session.loginUser != null}" class="top-user">
+                <img src="/uploads/covers/未登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;" alt="未登录">
+                <a class="btn text-white pink-btn" href="/login" th:href="@{/login}">登录</a>
+            </div>
+			
+            <a th:if="${session.loginUser != null and session.loginUser.role == 'admin'}"
+               class="btn text-white pink-btn"
+               href="/admin/dashboard"
+               th:href="@{/admin/dashboard}">管理后台</a>
+            <a th:if="${session.loginUser == null or session.loginUser.role != 'admin'}"
+               class="btn text-white pink-btn"
+               href="/admin/login"
+               th:href="@{/admin/login}">管理员登录</a>
+        </div>
+    </div>
+
+    <div class="back" id="middle">
+		
+        <div id="kind">
+            <p>分类:</p>
+            <div class="kindButton">
+                <a href="/?category=全部" th:href="@{/(category='全部')}" class="btn btn-light btn-sm" th:classappend="${currentCategory == null or currentCategory == '' or currentCategory == '全部'} ? ' active-category' : ''">全部</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=游戏" th:href="@{/(category='游戏')}" class="btn btn-light btn-sm" th:classappend="${currentCategory == '游戏'} ? ' active-category' : ''">游戏</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=体育" th:href="@{/(category='体育')}" class="btn btn-light btn-sm" th:classappend="${currentCategory == '体育'} ? ' active-category' : ''">体育</a>
+            </div>
+            <div class="kindButton">
+                <a href="/?category=动漫" th:href="@{/(category='动漫')}" class="btn btn-light btn-sm" th:classappend="${currentCategory == '动漫'} ? ' active-category' : ''">动漫</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="back" id="bottom">
+        <!-- 修复：只有当 video 不为空时才显示推荐视频区域 -->
+        <section id="recommendVideo" th:if="${video != null}">
+            <a th:href="@{/video/{id}(id=${video.id})}" class="video-link">
+                <div id="rvImg">
+                    <img th:src="${video.coverPath != null and video.coverPath != '' ? video.coverPath : '/uploads/covers/大封面.jpg'}" src="/uploads/covers/大封面.jpg" alt="推荐视频封面">
+                    <p id="rvTitle" th:text="${video.title}">推荐视频</p>
+                    <p class="vMeta" th:text="${video.category}">分类</p>
+                </div>
+            </a>
+        </section>
+
+        <section id="commandVideo">
+            <div class="empty-state" th:if="${videos == null or #lists.isEmpty(videos)}">
+                暂无视频，等待管理员sama上传中(*^▽^*)
+            </div>
+            <div class="video-grid" th:if="${videos != null and !#lists.isEmpty(videos)}">
+                <a th:each="videoItem : ${videos}"
+                   class="cmVideo video-link"
+                   th:href="@{/video/{id}(id=${videoItem.id})}">
+                    <img class="poster" th:src="${videoItem.coverPath != null and videoItem.coverPath != '' ? videoItem.coverPath : '/uploads/covers/封面.jpg'}" src="/uploads/covers/封面.jpg" alt="视频封面">
+                    <p class="vTitle" th:text="${videoItem.title}">视频标题</p>
+                    <p class="vMeta" th:text="${videoItem.category}">分类</p>
+                </a>
+            </div>
+        </section>
+    </main>
+>>>>>>> Stashed changes
 </body>
 </html>

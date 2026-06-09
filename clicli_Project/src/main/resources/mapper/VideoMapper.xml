@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.VideoMapper">
+<<<<<<< Updated upstream
     
+=======
+
+    <resultMap id="VideoResultMap" type="com.example.demo.model.Video">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="category" property="category"/>
+        <result column="cover_path" property="coverPath"/>
+        <result column="video_path" property="videoPath"/>
+        <result column="description" property="description"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="reserved1" property="reserved1"/>
+        <result column="reserved2" property="reserved2"/>
+        <result column="reserved3" property="reserved3"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO video(
+            title, category, cover_path, video_path, description, created_at
+        ) VALUES(
+            #{title}, #{category}, #{coverPath}, #{videoPath}, #{description}, #{createdAt}
+        )
+    </insert>
+
+    <select id="findAll" resultMap="VideoResultMap">
+        SELECT * FROM video ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" resultMap="VideoResultMap">
+        SELECT * FROM video WHERE id = #{id}
+    </select>
+
+    <select id="findByCategory" resultMap="VideoResultMap">
+        SELECT * FROM video WHERE category = #{category} ORDER BY created_at DESC
+    </select>
+    
+  <select id="searchByTitle"
+        resultMap="VideoResultMap">
+
+    SELECT *
+    FROM video
+    WHERE title LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY created_at DESC
+
+</select>
+
+    <delete id="delete">
+        DELETE FROM video WHERE id = #{id}
+    </delete>
+    
+    <update id="update">
+        UPDATE video
+        SET title = #{title},
+            category = #{category},
+            cover_path = #{coverPath},
+            video_path = #{videoPath},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+    
+<select id="findLatestVideos" resultMap="VideoResultMap">
+    SELECT * FROM video
+    ORDER BY created_at DESC
+    LIMIT 6
+</select>
+>>>>>>> Stashed changes
 </mapper>

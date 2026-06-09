@@ -1,0 +1,621 @@
+<<<<<<< Updated upstream
+=======
+@charset "UTF-8";
+
+/* 全局背景 */
+body.page-pink {
+    background-color: rgb(255, 228, 254);
+}
+
+.back {
+    background-color: rgb(255, 228, 254);
+}
+
+.pink-btn {
+    background-color: #ff69b4 !important;
+    border-color: #ff69b4 !important;
+    color: white !important;
+}
+
+.pink-btn:hover,
+.pink-btn:focus {
+    background-color: #f24aa3 !important;
+    border-color: #f24aa3 !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268 !important;
+    border-color: #5a6268 !important;
+}
+
+/* ========== 顶部导航 ========== */
+#top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    width: 100%;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(235, 0, 141, 0.08);
+}
+
+/* 搜索区域 */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* 表单 */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 输入框 */
+.search-input {
+    width: 450px;
+    height: 42px;
+    padding: 0 15px;
+    border: 2px solid #ff69b4;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* 搜索按钮 */
+.search-btn {
+    height: 42px;
+    padding: 0 25px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff69b4;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-btn:hover {
+    opacity: 0.9;
+}
+
+#siteName {
+   width: auto;
+}
+
+.top-actions,
+.top-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.avatar {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.top-nickname {
+    color: rgb(235, 0, 141);
+    display: inline;
+    margin: 0 10px 0 0;
+    font-weight: 600;
+}
+
+/* ========== 分类栏 ========== */
+#middle {
+    display: flex;
+    justify-content: center;
+    min-height: 50px;
+    width: 100%;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    z-index: 9;
+    padding: 10px 20px;
+    background-color: rgb(255, 228, 254);
+}
+
+#kind {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+#kind p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.kindButton {
+    display: flex;
+}
+
+.active-category {
+    color: #ffffff !important;
+    background-color: #ff69b4 !important;
+    border-color: #ff69b4 !important;
+}
+
+/* ========== 首页底部区域 ========== */
+#bottom {
+    display: flex;
+    gap: 20px;
+    width: 90%;
+    margin: 170px auto 30px auto;
+	align-items: stretch;
+}
+
+/* 左侧推荐视频 */
+#recommendVideo {
+    width: 35%;
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#rvImg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#rvImg img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px;
+}
+#rvTitle {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #222222;
+}
+
+/* 右侧视频网格 */
+#commandVideo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.cmVideo {
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    min-width: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cmVideo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(235, 0, 141, 0.12);
+}
+
+.poster {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+}
+
+.vTitle {
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222222;
+    word-break: break-word;
+}
+
+.vMeta {
+    margin: 8px 0 0;
+    color: #777777;
+    font-size: 14px;
+}
+
+.empty-state {
+    width: 100%;
+    padding: 32px;
+    text-align: center;
+    color: rgb(235, 0, 141);
+    background: #ffffff;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.small-empty {
+    padding: 16px;
+}
+
+/* ========== 登录/注册页面 ========== */
+#article,
+.auth-panel {
+    margin: 200px auto 0;
+    text-align: center;
+    width: min(60%, 680px);
+    min-height: auto;
+}
+
+.login-input {
+    width: min(350px, 100%);
+    margin: 0 auto;
+}
+
+#article p {
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+#smallTitle {
+    color: rgb(235, 0, 141);
+}
+
+.error-message {
+    width: min(350px, 100%);
+    margin: 16px auto 0;
+    color: #842029;
+    background: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+/* ========== 视频播放页 ========== */
+#play {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    width: 90%;
+    margin: 130px auto 40px;
+    padding: 28px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+#playVideo {
+    flex: 1;
+    min-width: 0;
+}
+
+.main-player {
+    width: 100%;
+    max-height: 520px;
+    aspect-ratio: 16 / 9;
+    background: #000000;
+    border-radius: 16px;
+}
+
+.video-description {
+    margin-top: 16px;
+    color: #444444;
+    line-height: 1.7;
+    word-break: break-word;
+}
+
+#side {
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.sidePoster {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.sideVideo {
+    display: block;
+    padding: 12px;
+    background: rgb(255, 228, 254);
+    border-radius: 16px;
+    text-decoration: none;
+}
+
+.sideVideo p {
+    margin: 0 0 10px;
+    color: #222222;
+    font-weight: 600;
+}
+
+/* ========== 管理后台 ========== */
+#manage {
+    background-color: white;
+    border-radius: 20px;
+    margin: 120px auto 40px;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 90%;
+}
+
+#select {
+    background-color: white;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-outline-primary {
+    margin-left: 10px;
+    color: #ff69b4 !important;
+    border-color: #ff69b4 !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+    background-color: #ff69b4 !important;
+    border-color: #ff69b4 !important;
+    color: white !important;
+}
+
+#manage .row {
+    padding: 10px;
+    margin: 10px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: rgb(255, 228, 254);
+    color: #ff69b4;
+    white-space: nowrap;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: #ffffff !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) > * {
+    background-color: #ffe4fe !important;
+}
+
+.action-cell {
+    white-space: nowrap;
+}
+
+.empty-row {
+    text-align: center;
+    color: #777777;
+}
+
+#userManage {
+    display: none;
+}
+
+#upload {
+    text-align: right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#upload p {
+    display: inline;
+    margin-right: 10px;
+}
+
+/* ========== 上传页面 ========== */
+.form-container {
+    background-color: white;
+    border-radius: 20px;
+    margin: 120px auto 40px;
+    padding: 24px;
+    box-sizing: border-box;
+    width: min(80%, 820px);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ff69b4;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ffd1ea;
+    border-radius: 12px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #ffb6d9;
+    border-radius: 12px;
+    background-color: #fff8fc;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* 编辑视频区块 */
+.edit-section {
+    background: #fff7fc;
+    border: 1px solid #ff9ed2;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.current-file {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 5px;
+    word-break: break-all;
+}
+
+/* 成功/错误提示 */
+.success-msg,
+.error-msg {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.success-msg {
+    background: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+.error-msg {
+    background: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+/* ========== 响应式布局 ========== */
+@media (max-width: 900px) {
+    #top {
+        height: auto;
+        min-height: 100px;
+        align-items: flex-start;
+    }
+
+    #middle {
+        top: 100px;
+    }
+
+    #bottom,
+    #play {
+        flex-direction: column;
+        margin-top: 180px;
+    }
+
+    #recommendVideo,
+    #commandVideo,
+    #side {
+        width: 100%;
+    }
+
+    #article,
+    .auth-panel,
+    .form-container,
+    #manage {
+        width: calc(100% - 32px);
+        margin-top: 150px;
+    }
+}
+
+@media (max-width: 600px) {
+    #siteName {
+        width: auto;
+    }
+
+    #top {
+        position: static;
+    }
+
+    #middle {
+        position: static;
+    }
+
+    #bottom,
+    #play,
+    #article,
+    .auth-panel,
+    .form-container,
+    #manage {
+        margin-top: 24px;
+    }
+
+    .top-actions,
+    .top-user {
+        justify-content: flex-start;
+    }
+
+    #kind {
+        gap: 10px;
+    }
+
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+	
+	
+}
+>>>>>>> Stashed changes
