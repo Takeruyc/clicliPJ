@@ -14,6 +14,14 @@
                 <img src="/uploads/covers/站名.png" style="width: 200px; height: auto; margin-top: 10px;" alt="clicli">
             </a>
         </div>
+		
+		<div class="search-container">
+		    <form th:action="@{/}" method="get" class="search-form">
+		        <input type="text" name="keyword" th:value="${keyword}" placeholder="Ciallo～(∠・ω )⌒☆" class="search-input">
+		        <button type="submit" class="search-btn">搜索</button>
+		    </form>
+		</div>
+		
         <div class="top-user">
             <p class="top-nickname" th:text="${nickname != null ? '小笨蛋~' + nickname : '小笨蛋~'}">小笨蛋~用户名</p>
             <img src="/uploads/covers/已登录.png" style="width: 65px; height: auto; margin-top: 5px; margin-right: 15px;" alt="已登录">
@@ -30,10 +38,17 @@
                 <source th:src="${video.videoPath}" src="/uploads/videos/demo.mp4" type="video/mp4">
                 浏览器不支持视频播放
             </video>
+			
+			<div class="video-actions">
+			    <button class="action-btn"> 👍 点赞 </button>
+			    <button class="action-btn"> 👎 踩 </button>
+			    <button class="action-btn"> ⭐ 收藏 </button>
+			    <button class="action-btn" onclick="copyVideoLink()"> 🔗 分享 </button>
+			</div>
             <p class="video-description" th:text="${video.description != null and video.description != '' ? video.description : '暂无描述'}">暂无描述</p>
         </section>
         <aside id="side">
-            <h4 id="smallTitle">为你推荐</h4>
+            <h4 id="smallTitle">猜你喜欢~</h4>
             <a th:each="rec : ${recommendVideos}" class="sideVideo video-link" th:href="@{/video/{id}(id=${rec.id})}">
                 <p th:text="${rec.title}">推荐视频标题</p>
                 <img class="sidePoster" th:src="${rec.coverPath != null and rec.coverPath != '' ? rec.coverPath : '/uploads/covers/封面.jpg'}" src="/uploads/covers/封面.jpg" alt="推荐视频封面">

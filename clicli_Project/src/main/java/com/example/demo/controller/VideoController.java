@@ -30,7 +30,7 @@ public class VideoController {
         List<Video> recommendVideos = videoService.findAll()
                 .stream()
                 .filter(item -> !id.equals(item.getId()))
-                .limit(3)
+                .limit(4)
                 .toList();
 
         User loginUser = (User) session.getAttribute("loginUser");
